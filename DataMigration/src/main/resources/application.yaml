@@ -1,0 +1,56 @@
+server:
+  port: 0
+  shutdown: graceful
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#  endpoint:
+#    shutdown:
+#      enabled: true
+
+spring:
+  profiles:
+    active: local,secret
+  application:
+    name: DATA-MIGRATION-SERVICE
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 500
+      #        show_sql: true
+      dialect: org.hibernate.dialect.MySQL5Dialect
+    open-in-view: true # false ?? ??? ??
+
+
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
+#      password: ${REDIS_PASSWORD}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    groups-order: DESC
+    operations-sorter: method
+    disable-swagger-default-url: true
+    display-request-duration: true
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  paths-to-match:
+    - /api/v1/data-migration/**
+
+#  batch:
+#    initializer-schema: always
