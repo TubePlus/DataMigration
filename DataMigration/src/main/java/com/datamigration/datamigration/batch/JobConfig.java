@@ -84,7 +84,7 @@ public class JobConfig {
     @Bean
     public ItemProcessor<List<CommunityInteraction>, List<Aggregation>> rankingItemProcessor() throws Exception {
 
-        HashMap<Long, Integer> processorMap = new HashMap<>();
+        HashMap<Long, Long> processorMap = new HashMap<>();
 
         for(CommunityInteraction interaction : Objects.requireNonNull(rankingItemReader().read())) {
 
@@ -93,7 +93,7 @@ public class JobConfig {
             processorMap.put(
                     interaction.getCommunityId(),
                     processorMap.getOrDefault(
-                            interaction.getCommunityId(), 0) + interaction.getPoint()
+                            interaction.getCommunityId(), 0L) + interaction.getPoint()
             );
 
             log.info("processorMap={}", processorMap);
@@ -117,7 +117,7 @@ public class JobConfig {
         public List<Aggregation> process(CommunityInteraction item) throws Exception {
 
             return List.of(
-                    new Aggregation((long) 100, (long) 1, 1)
+                    new Aggregation((long) 100, (long) 1, 1L)
             );
         }
     }
