@@ -21,7 +21,7 @@ public class CommunityInteraction {
     private Long communityId;
 
     @Column(name = "point")
-    private Integer point;
+    private Long point;
 
     @Column(name = "interaction_type")
     private InteractionType interactionType;

@@ -22,5 +22,5 @@ public class Aggregation {
     private Long communityId;
 
     @Column(name = "points")
-    private Integer points;
+    private Long points;
 }
