@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
@@ -44,6 +46,7 @@ public class JobConfig {
     }
 
     @Bean
+    @JobScope // Step 선언문에서 사용
     public Step rankAggregationStep(JobRepository jobRepository,
                                     PlatformTransactionManager transactionManager) throws Exception {
 
@@ -61,6 +64,7 @@ public class JobConfig {
 
     // READER
     // Chunk 단위로 트랜잭션 처리
+    @StepScope
     @Bean
     public JpaPagingItemReader<List<CommunityInteraction>> rankingItemReader() {
 
@@ -70,12 +74,13 @@ public class JobConfig {
         reader.setEntityManagerFactory(emf);
         // 한번에 읽어올 양 설정
         reader.setPageSize(CHUNK_SIZE);
-        reader.setQueryString("SELECT c FROM CommunityInteraction c");
+        reader.setQueryString("SELECT data FROM CommunityInteraction c");
 
         log.info("reader={}", reader);
         return reader;
     }
 
+    @StepScope
     @Bean
     public ItemProcessor<List<CommunityInteraction>, List<Aggregation>> rankingItemProcessor() throws Exception {
 
@@ -97,6 +102,7 @@ public class JobConfig {
         return null;
     }
 
+    @StepScope
     @Bean
     public JpaItemWriter<List<Aggregation>> rankingItemWriter() {
 

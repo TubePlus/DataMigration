@@ -10,5 +10,4 @@ import java.util.List;
 @Repository
 public interface CommunityInteractionRepository extends JpaRepository<CommunityInteraction, Long> {
 
-    void saveList(List<CommunityInteraction> communityInteractions);
 }

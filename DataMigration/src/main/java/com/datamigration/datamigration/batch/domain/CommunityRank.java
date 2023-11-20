@@ -20,6 +20,6 @@ public class CommunityRank {
     @Column(name = "community_id")
     private Long communityId;
 
-    @Column(name = "rank")
-    private Integer rank;
+    @Column(name = "community_rank")
+    private Integer communityRank;
 }
