@@ -25,9 +25,10 @@ public class KafkaConsumer {
 
     @KafkaListener(topics="communityInteraction", groupId="communityInteraction-dataMigration-service")
     public void processMessage(String kafkaMessage) throws JsonProcessingException {
-        Map<Object, Object> map = new HashMap<>(); // kafka 역직렬화
+        log.info("kafka message received =====> " + kafkaMessage);
         CommunityInteractionDto communityInteractionDto
                 = objectMapper.readValue(kafkaMessage, CommunityInteractionDto.class);
+        log.info("kafka dto message received =====> " + communityInteractionDto);
         communityInteractionRepository.save(
                 CommunityInteraction.builder()
                     .communityId(communityInteractionDto.getCommunityId())
