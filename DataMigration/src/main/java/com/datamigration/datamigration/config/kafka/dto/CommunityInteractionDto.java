@@ -1,6 +1,6 @@
 package com.datamigration.datamigration.config.kafka.dto;
 
-import com.datamigration.datamigration.batch.domain.InteractionType;
+import com.datamigration.datamigration.rankingaggregation.domain.InteractionType;
 import lombok.Getter;
 
 @Getter

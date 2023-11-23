@@ -13,16 +13,9 @@ management:
 
 spring:
   profiles:
-    active: local,secret
+    active: local
   application:
     name: DATA-MIGRATION-SERVICE
-
-  kafka:
-    consumer:
-      bootstrap-servers: plaintext://kafka1:9092,plaintext://kafka2:9092,plaintext://kafka3:9092
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
   jpa:
     hibernate:
@@ -36,6 +29,11 @@ spring:
       dialect: org.hibernate.dialect.MySQL5Dialect
     open-in-view: true # false ?? ??? ??
 
+logging:
+  level:
+    org:
+      springframework:
+        batch: DEBUG
 
 #  data:
 #    redis:
@@ -57,6 +55,3 @@ springdoc:
   default-produces-media-type: application/json
   paths-to-match:
     - /api/v1/data-migration/**
-
-#  batch:
-#    initializer-schema: always
