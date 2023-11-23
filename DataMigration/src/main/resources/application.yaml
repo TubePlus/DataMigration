@@ -13,7 +13,7 @@ management:
 
 spring:
   profiles:
-    active: local
+    active: local, secret
   application:
     name: DATA-MIGRATION-SERVICE
 
