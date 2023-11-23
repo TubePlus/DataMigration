@@ -1,4 +1,5 @@
-package com.datamigration.datamigration.batch.domain;
+package com.datamigration.datamigration.rankingaggregation.domain;
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,9 @@ public class CommunityRank {
     @Column(name = "community_id")
     private Long communityId;
 
+    @Column(name = "points")
+    private Long points;
+
     @Column(name = "community_rank")
-    private Integer communityRank;
+    private Long communityRank;
 }

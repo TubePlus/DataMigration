@@ -1,17 +1,16 @@
-package com.datamigration.datamigration.batch.domain;
+package com.datamigration.datamigration.rankingaggregation.domain;
 
+import com.datamigration.datamigration.global.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Getter
-@NoArgsConstructor
+@Getter @Setter
 @Builder
+@ToString
+@NoArgsConstructor
 @AllArgsConstructor
-public class CommunityInteraction {
+public class CommunityInteraction extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +22,7 @@ public class CommunityInteraction {
     @Column(name = "point")
     private Long point;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "interaction_type")
     private InteractionType interactionType;
 }

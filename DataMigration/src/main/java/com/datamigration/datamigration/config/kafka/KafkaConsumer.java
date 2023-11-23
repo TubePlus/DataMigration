@@ -1,9 +1,9 @@
 package com.datamigration.datamigration.config.kafka;
 
-import com.datamigration.datamigration.batch.Infrastructure.CommunityInteractionRepository;
-import com.datamigration.datamigration.batch.domain.CommunityInteraction;
 import com.datamigration.datamigration.config.kafka.dto.CommunityInteractionDto;
 
+import com.datamigration.datamigration.rankingaggregation.domain.CommunityInteraction;
+import com.datamigration.datamigration.rankingaggregation.infrastructure.CommunityInteractionRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
