@@ -1,5 +1,7 @@
 package com.datamigration.datamigration.rankingaggregation.domain;
 
+import com.datamigration.datamigration.rankingaggregation.vo.CreatorDataAggregationCommunityRequest;
+import com.datamigration.datamigration.rankingaggregation.vo.CreatorDataAggregationUserRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,4 +43,18 @@ public class CreatorDataAggregation {
 
     @Column(name = "youtube_name")
     private String youtubeName;
+
+    public void updateCommunity(CreatorDataAggregationCommunityRequest creatorDataAggregationUserRequest) {
+        this.communityId = creatorDataAggregationUserRequest.getCommunityId();
+        this.communityName = creatorDataAggregationUserRequest.getCommunityName();
+        this.youtubeName = creatorDataAggregationUserRequest.getYoutubeName();
+    }
+
+    public void updateUser(CreatorDataAggregationUserRequest creatorDataAggregationUserRequest) {
+        this.userUuid = creatorDataAggregationUserRequest.getUserUuid();
+        this.category = creatorDataAggregationUserRequest.getCategory();
+        this.profileImage = creatorDataAggregationUserRequest.getProfileImage();
+        this.youtubeHandler = creatorDataAggregationUserRequest.getYoutubeHandler();
+        this.username = creatorDataAggregationUserRequest.getUserName();
+    }
 }
