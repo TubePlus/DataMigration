@@ -34,6 +34,10 @@ public class KafkaConsumer {
                     .point(communityInteractionDto.getPoint())
                     .interactionType(communityInteractionDto.getInteractionType())
                     .build());
+        if (communityInteractionDto.getPoint() == 800) {
+            creatorDataAggregationService
+                    .putCreatorDataAggregationByMemberCount(communityInteractionDto.getCommunityId(),1);
+        }
     }
     @KafkaListener(topics="creatorDataAggregation", groupId="creatorDataAggregation-dataMigration-service")
     public void consumeCreatorDataAggregation(String kafkaMessage) throws JsonProcessingException {
