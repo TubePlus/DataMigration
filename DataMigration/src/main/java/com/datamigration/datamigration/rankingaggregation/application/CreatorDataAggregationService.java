@@ -7,4 +7,5 @@ public interface CreatorDataAggregationService {
     void saveCommunityInteraction(CreatorDataAggregationUserRequest creatorDataAggregationUserRequest);
 
     void putCreatorDataAggregationByCommunity(CreatorDataAggregationCommunityRequest creatorDataAggregationCommunityRequest);
+    void putCreatorDataAggregationByMemberCount(Long communityId, Integer memberCount);
 }

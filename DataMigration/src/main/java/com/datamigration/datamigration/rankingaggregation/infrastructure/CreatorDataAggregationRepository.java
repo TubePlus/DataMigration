@@ -12,4 +12,6 @@ public interface CreatorDataAggregationRepository extends JpaRepository<CreatorD
     boolean existsByUserUuid(String userUuid);
 
     Optional<CreatorDataAggregation> findByUserUuid(String userUuid);
+
+    Optional<CreatorDataAggregation> findByCommunityId(Long communityId);
 }

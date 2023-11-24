@@ -57,4 +57,7 @@ public class CreatorDataAggregation {
         this.youtubeHandler = creatorDataAggregationUserRequest.getYoutubeHandler();
         this.username = creatorDataAggregationUserRequest.getUserName();
     }
+    public void updateMemberCount(Integer memberCount) {
+        this.memberCount += memberCount;
+    }
 }

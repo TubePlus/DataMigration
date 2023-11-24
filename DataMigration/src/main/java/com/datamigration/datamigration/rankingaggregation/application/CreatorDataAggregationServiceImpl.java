@@ -28,6 +28,7 @@ public class CreatorDataAggregationServiceImpl implements CreatorDataAggregation
             CreatorDataAggregation creatorDataAggregation = CreatorDataAggregation.builder()
                     .userUuid(creatorDataAggregationUserRequest.getUserUuid())
                     .category(creatorDataAggregationUserRequest.getCategory())
+                    .memberCount(0)
                     .profileImage(creatorDataAggregationUserRequest.getProfileImage())
                     .youtubeHandler(creatorDataAggregationUserRequest.getYoutubeHandler())
                     .username(creatorDataAggregationUserRequest.getUserName())
@@ -42,6 +43,15 @@ public class CreatorDataAggregationServiceImpl implements CreatorDataAggregation
                 = creatorDataAggregationRepository.findByUserUuid(creatorDataAggregationCommunityRequest.getUserUuid())
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_RESOURCE));
         creatorDataAggregation.updateCommunity(creatorDataAggregationCommunityRequest);
+        creatorDataAggregationRepository.save(creatorDataAggregation);
+    }
+
+    @Override
+    public void putCreatorDataAggregationByMemberCount(Long communityId, Integer memberCount) {
+        CreatorDataAggregation creatorDataAggregation
+                = creatorDataAggregationRepository.findByCommunityId(communityId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_RESOURCE));
+        creatorDataAggregation.updateMemberCount(memberCount);
         creatorDataAggregationRepository.save(creatorDataAggregation);
     }
 }
