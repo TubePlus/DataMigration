@@ -2,9 +2,7 @@ package com.datamigration.datamigration.rankingaggregation.batch.job;
 
 
 import com.datamigration.datamigration.rankingaggregation.batch.chunk.QuerydslPagingItemReader;
-import com.datamigration.datamigration.rankingaggregation.domain.CommunityInteraction;
-import com.datamigration.datamigration.rankingaggregation.domain.InteractionDataAggregation;
-import com.datamigration.datamigration.rankingaggregation.domain.QCommunityInteraction;
+import com.datamigration.datamigration.rankingaggregation.domain.*;
 import com.datamigration.datamigration.rankingaggregation.infrastructure.InteractionDataAggregationRepository;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +25,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AggregationJob {
 
-    private static final Integer CHUNK_SIZE = 10;
+    private static final Integer CHUNK_SIZE = 100;
     private final JobRepository jobRepository;
     private final EntityManagerFactory emf;
     private final PlatformTransactionManager transactionManager;
@@ -39,10 +37,15 @@ public class AggregationJob {
 
         return new JobBuilder("rankingAggregationJob", jobRepository)
                 .start(rankingAggregationStep())
+                .next(rankingCommunityStep())
                 .build();
     }
 
-    // STEP
+    /**
+     * STEP
+     */
+
+    // 시간별 집계 테이블로 데이터 이관
     @Bean
     public Step rankingAggregationStep() {
 
@@ -54,7 +57,23 @@ public class AggregationJob {
                 .build();
     }
 
-    // READER
+    // 커뮤니티 랭킹 테이블로 데이터 이관
+    @Bean
+    public Step rankingCommunityStep() {
+
+        return new StepBuilder("rankingCommunityStep", jobRepository)
+                .<InteractionDataAggregation, CommunityRank>chunk(CHUNK_SIZE, transactionManager)
+                .reader(rankingCommunityReader())
+                .processor(rankingCommunityProcessor())
+//                .writer()
+                .build();
+    }
+
+    /**
+     * READER
+     */
+
+    // 시간별 집계 테이블로 데이터 이관
     @Bean
     public QuerydslPagingItemReader<CommunityInteraction> rankingAggregationReader() {
 
@@ -68,23 +87,36 @@ public class AggregationJob {
         );
 
         reader.setPageSize(CHUNK_SIZE);
-        System.out.println("========================================================================================================================");
-        System.out.println("reader:" + reader);
-        System.out.println("========================================================================================================================");
         return reader;
     }
 
-    // PROCESSOR
+    // 커뮤니티 랭킹 테이블로 데이터 이관
+    @Bean
+    public QuerydslPagingItemReader<InteractionDataAggregation> rankingCommunityReader() {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        QInteractionDataAggregation qInteractionDataAggregation = QInteractionDataAggregation.interactionDataAggregation;
+        QuerydslPagingItemReader<InteractionDataAggregation> reader = new QuerydslPagingItemReader<>(
+                emf, CHUNK_SIZE, queryFactory -> queryFactory
+                .selectFrom(qInteractionDataAggregation)
+        );
+
+        reader.setPageSize(CHUNK_SIZE);
+        return reader;
+    }
+
+    /**
+     * PROCESSOR
+     */
+
+    // 시간별 집계 테이블로 데이터 이관
     @Bean
     public ItemProcessor<CommunityInteraction, InteractionDataAggregation> rankingAggregationProcessor() {
 
         return interaction -> {
             Long communityId = interaction.getCommunityId();
             Long point = interaction.getPoint();
-
-            System.out.println("========================================================================================================================");
-            System.out.println("communityId: " + communityId + ", point: " + point);
-            System.out.println("========================================================================================================================");
 
             return InteractionDataAggregation.builder()
                     .communityId(communityId)
@@ -93,11 +125,23 @@ public class AggregationJob {
         };
     }
 
+    // 커뮤니티 랭킹 테이블로 데이터 이관
+    //todo: 마무리하기
+    @Bean
+    public ItemProcessor<InteractionDataAggregation, CommunityRank> rankingCommunityProcessor() {
+
+        return data -> {
+            Long communityId = data.getCommunityId();
+            Long points = data.getPoints();
+
+            return CommunityRank.builder().build();
+        };
+    }
+
     // WRITER
     @Bean
     public ItemWriter<InteractionDataAggregation> rankingAggregationWriter() {
 
-        // todo: 저장시에 redis에도 저장해야함.
         return chunk -> {
 
             for (InteractionDataAggregation interactionDataAggregation : chunk) {
@@ -109,11 +153,21 @@ public class AggregationJob {
                             interactionDataAggregationRepository.findByCommunityId(interactionDataAggregation.getCommunityId());
                     savedInteractionDataAggregation.updatePoints(interactionDataAggregation.getPoints());
                 }
-
-                System.out.println("========================================================================================================================");
-                System.out.println("interactionDataAggregation: " + interactionDataAggregation);
-                System.out.println("========================================================================================================================");
             }
+        };
+    }
+
+    @Bean
+    public ItemWriter<CommunityRank> rankingCommunityWriter() {
+
+        // todo: 저장시에 redis에도 저장해야함.
+        return chunk -> {
+
+            for (CommunityRank communityRank : chunk) {
+
+
+            }
+
         };
     }
 }
