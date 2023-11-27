@@ -18,7 +18,11 @@ spring:
 
   kafka:
     consumer:
+      bootstrap-servers: plaintext://kafka1:9092,plaintext://kafka2:9092,plaintext://kafka3:9092
       auto-offset-reset: earliest
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
 eureka:
   client:
