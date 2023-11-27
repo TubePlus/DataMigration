@@ -8,13 +8,16 @@ import com.datamigration.datamigration.rankingaggregation.vo.CreatorDataAggregat
 import com.datamigration.datamigration.rankingaggregation.vo.CreatorDataAggregationUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CreatorDataAggregationServiceImpl implements CreatorDataAggregationService{
     private final CreatorDataAggregationRepository creatorDataAggregationRepository;
 
     @Override
+    @Transactional
     public void saveCommunityInteraction(CreatorDataAggregationUserRequest creatorDataAggregationUserRequest) {
         if (creatorDataAggregationRepository.existsByUserUuid(creatorDataAggregationUserRequest.getUserUuid())) {
             // 데이터 수정하기
@@ -38,6 +41,7 @@ public class CreatorDataAggregationServiceImpl implements CreatorDataAggregation
     }
 
     @Override
+    @Transactional
     public void putCreatorDataAggregationByCommunity(CreatorDataAggregationCommunityRequest creatorDataAggregationCommunityRequest) {
         CreatorDataAggregation creatorDataAggregation
                 = creatorDataAggregationRepository.findByUserUuid(creatorDataAggregationCommunityRequest.getUserUuid())
@@ -47,6 +51,7 @@ public class CreatorDataAggregationServiceImpl implements CreatorDataAggregation
     }
 
     @Override
+    @Transactional
     public void putCreatorDataAggregationByMemberCount(Long communityId, Integer memberCount) {
         CreatorDataAggregation creatorDataAggregation
                 = creatorDataAggregationRepository.findByCommunityId(communityId)

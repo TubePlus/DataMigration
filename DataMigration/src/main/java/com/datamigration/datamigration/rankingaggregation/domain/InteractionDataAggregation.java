@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @ToString
+@Table(name = "interaction_data_aggregation")
 public class InteractionDataAggregation {
 
     @Id

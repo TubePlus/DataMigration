@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommunityRankRepository extends JpaRepository<CommunityRank, Long> {
+
+    Boolean existsByCommunityId(Long communityId);
+    CommunityRank findByCommunityId(Long communityId);
 }

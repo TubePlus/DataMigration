@@ -10,6 +10,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "community_interaction")
 public class CommunityInteraction extends BaseEntity {
 
     @Id

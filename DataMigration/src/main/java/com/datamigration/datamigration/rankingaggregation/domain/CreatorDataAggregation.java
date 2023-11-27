@@ -11,6 +11,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @ToString
+@Table(name = "creator_data_aggregation")
 public class CreatorDataAggregation {
 
     @Id
