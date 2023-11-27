@@ -6,24 +6,26 @@ import com.datamigration.datamigration.rankingaggregation.infrastructure.Communi
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class DataMigrationServiceImpl implements DataMigrationService {
 
-    private final CommunityRankRepository communityRankRepository;
     private final JPAQueryFactory queryFactory;
 
     @Override
+    @Transactional(readOnly = true)
     public List<CommunityRank> getCommunityRankings(Integer size) {
 
         QCommunityRank qCommunityRank = new QCommunityRank("communityRank");
 
         return queryFactory
                 .selectFrom(qCommunityRank)
-                .orderBy(qCommunityRank.communityRank.asc())
+                .orderBy(qCommunityRank.points.desc())
                 .limit(size)
                 .fetch();
     }
