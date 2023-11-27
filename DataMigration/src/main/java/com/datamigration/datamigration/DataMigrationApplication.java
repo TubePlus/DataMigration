@@ -9,10 +9,10 @@ import org.springframework.kafka.annotation.EnableKafka;
 @EnableKafka // kafka 활성화
 //@EnableScheduling // 스케줄링 활성화
 @EnableJpaAuditing // base entity 자동 적용
-//@EnableScheduling // 스케줄링 활성화
+@EnableScheduling // 스케줄링 활성화
 @SpringBootApplication
 @EnableBatchProcessing // 배치 기능 활성화
-//@Cacheable
+@EnableCaching // 캐시 활성화
 public class DataMigrationApplication {
 
 	public static void main(String[] args) {
